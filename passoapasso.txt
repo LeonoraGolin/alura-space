@@ -1,0 +1,77 @@
+1) instalar Python no C://Arquivos de Programas e incluir no PATH
+2) instalar PIP - gerenciador de pacotes do python
+3) instalar ambiente virtual dedicado para cada projeto django. 
+   VENV já vem com Python.
+   entre na pasta do projeto, no terminal
+   >py -m venv .venv
+   >.venv\Scripts\activate.bat .
+4) instalar o django no projeto:
+   >py -m pip install django
+5) para visualizar as dependências
+   >pip freeze 
+6) cria um arquivo requirements.txt e salva nele as dependências
+   >pip freeze > requirements.txt
+7) verificar versão do django
+   >django-admin --version
+8) mostrar os comandos
+   >django-admin help
+9) criar o projeto django, na pasta do projeto, com ambiente virtual ativado:
+   >django-admin startproject setup .
+   o nome setup é boa prática e o ponto evita que sejam criadas duas pastas. 
+
+10) na pasta setup clicar Ctrl+Shift+P e digitar Python Select Interpreter e
+selecionar o recomendado .venv = venv
+11) rodar o servidor
+    >py manage.py runserver
+
+12) em settings.py:
+    alterar language-code para pt-br
+    alterar timezone para America/Sao_Paulo
+
+13) para não informar secret-key para o github
+    parar servidor
+    >pip install python-dotenv
+    >pip freeze > requirements.txt
+    cria arquivo .env na pasta raiz
+    copia para ele a SECRET-KEY que está em SETTINGS e apagar de SETTINGS.
+    no arquivo .env, apagar as aspas
+
+14) em settings.py, acrescentar:
+    from pathlib import Path, os
+    from dotenv import load_dotenv
+
+    load_dotenv()
+    em SECRET_KEY = str(os.getenv('SECRET_KEY'))
+
+15) criar arquivo .gitignore e copiar nele a lista do site gitignore.io
+
+16) para enviar arquivos ao github, criar um repositório.
+    no visualcode, parar o servidor
+    >git init
+    >git add .
+    >git commit -m "observação"
+    >git remote add origin "link copiado do diretório no github"
+    >git push origin master
+
+17) criar app
+    python manage.py startapp meuapp
+    cria nova pasta com arquivos
+    ir em setup/settings.py e incluir em INSTALLED_APPS:
+    ...'django.contrib.staticfiles',
+    'meuapp',
+]
+
+18) criar arquivo e abrir meuapp/views.py e atualizar:
+    from django.shortcuts import render
+    from django.http import HttpResponse
+
+    def meuapp(request):
+        return HttpResponse("Hello world!")
+
+19) criar arquivo meuapp/urls.py e atualizar:
+    from django.urls import path
+    from . import views
+
+    urlpatterns = [
+        path('meuapp/', views.meuapp, name='meuapp'),
+    ]
